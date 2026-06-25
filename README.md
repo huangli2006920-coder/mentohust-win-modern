@@ -33,7 +33,7 @@
 **构建 Release 版本**
 
 ```powershell
-.\mentohust-win-modern\mentohust-modern\tools\build_exe.ps1
+.\mentohust-modern\tools\build_exe.ps1
 ```
 
 
