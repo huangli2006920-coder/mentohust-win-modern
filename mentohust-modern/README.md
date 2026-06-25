@@ -7,7 +7,8 @@
 安装可编辑包：
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -e .\mentohust-modern
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e .\mentohust-modern[build]
 ```
 
 从虚拟环境启动 GUI：
@@ -27,7 +28,7 @@
 构建可分发版本：
 
 ```powershell
-.\mentohust-modern\tools\build_exe.ps1
+pwsh.exe -File .\mentohust-modern\tools\build_exe.ps1
 ```
 
 默认输出目录：
@@ -35,6 +36,8 @@
 ```text
 dist\MentoHUST Win Modern\
 ```
+
+构建脚本会自动使用仓库根目录下独立的 `.build-venv/`；如果发现它不可用或引用了其他机器上的 Python，会自动重建后再执行打包。
 
 ## 配置说明
 
@@ -51,4 +54,6 @@ dist\MentoHUST Win Modern\
 - 程序启动时会请求管理员权限。
 - 连接前需要先安装 `Npcap`。
 - 官方 `Ruijie Supplicant\8021x.exe` 仅作为兼容性参考文件。
-- 像 `hlaccount.json` 这样的本地个人配置不应提交到仓库。
+- 发布 `--onedir` 版本时，请分发整个 `dist\MentoHUST Win Modern\` 目录。
+- 建议在一台未安装 Python 的 Windows 机器上验证发布包是否能正常启动。
+- 像 `hlaccount.json`、`.venv/` 和 `.build-venv/` 这样的本地文件不应提交到仓库。
