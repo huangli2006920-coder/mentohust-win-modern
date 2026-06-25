@@ -2,6 +2,8 @@
 
 `MentoHUST Win Modern` 是一个面向 Windows 的锐捷有线 802.1X 认证客户端重制项目。仓库里同时保留了 OpenWrt 参考实现以及当前维护中的现代 GUI 版本，方便对照、兼容和后续开源整理。
 
+<img width="1124" height="927" alt="image" src="https://github.com/user-attachments/assets/b433553a-8295-4ead-9930-8b706124a51a" />
+
 使用 Codex App 辅助开发。
 
 ## 仓库结构
