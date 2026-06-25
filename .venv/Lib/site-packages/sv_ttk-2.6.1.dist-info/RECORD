@@ -1,0 +1,17 @@
+sv_ttk-2.6.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+sv_ttk-2.6.1.dist-info/METADATA,sha256=XGF6mg-mX3jpTWDJ8oSiMfcs6bDSu-ASdmFqOjLdfPI,4911
+sv_ttk-2.6.1.dist-info/RECORD,,
+sv_ttk-2.6.1.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+sv_ttk-2.6.1.dist-info/WHEEL,sha256=_zCd3N1l69ArxyTb8rzEoP9TpbYXkqRFSNOD5OuxnTs,91
+sv_ttk-2.6.1.dist-info/licenses/LICENSE,sha256=b8Bgne9JYqRxhvsxTNtqEVmeP1PtPL0H8NnvhOYYvM0,1079
+sv_ttk-2.6.1.dist-info/top_level.txt,sha256=QiKSt4tkd-7tU3AnnudeVrSvyarDdlV8zmFRvsu81CI,7
+sv_ttk/__init__.py,sha256=PVuilfN6JjE3LWd_Ps8HTBdX3b8-NDNXSC9EcTawdtI,1350
+sv_ttk/__pycache__/__init__.cpython-312.pyc,,
+sv_ttk/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+sv_ttk/sv.tcl,sha256=921Mh1gfeADzJZKWI3k_v0IuTyZDdDkaOvX1uk3SwSs,5039
+sv_ttk/theme/dark.tcl,sha256=iplwNExyNO_Hq9LrySHvZSNwqMOoPdAPLQVR4hNHnhc,16175
+sv_ttk/theme/light.tcl,sha256=btmCmDpSN6sBoqaSpbVTG8E1IbUqgi9PrgjY-UyAtNc,16298
+sv_ttk/theme/sprites_dark.tcl,sha256=gr7sfeXyBGZQETv8_jtO61B37vPRD6pxceeFElpmScM,3045
+sv_ttk/theme/sprites_light.tcl,sha256=gr7sfeXyBGZQETv8_jtO61B37vPRD6pxceeFElpmScM,3045
+sv_ttk/theme/spritesheet_dark.png,sha256=NA7_Ajh8olIwEPnAvnEznMVIsqie8TSUOK_YgaK-_YY,18371
+sv_ttk/theme/spritesheet_light.png,sha256=U-1Yr3Noqe9nJ5l6i0yiK0gGEbpl46Jee_TGn-dWfSc,18388

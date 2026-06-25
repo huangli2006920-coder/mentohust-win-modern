@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# 3rd tools
+tools/
+
+# Build outputs
+build/
+dist/
+*.spec
+
+# Editor / IDE
+.vs/f
+.vscode/
+.idea/
+*.suo
+*.user
+*.VC.db
+
+# Native build outputs
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.ipch
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+mentohust-windows/VS2012/Debug/
+mentohust-windows/VS2012/Release*/
+
+# Local runtime data
+*.log
+mentohust-modern/hlaccount.json
+Ruijie Supplicant/logs/
+
+# Agents Notes
+AGENTS.md
