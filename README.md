@@ -4,6 +4,8 @@
 
 使用 Codex App 辅助开发。
 
+![image-20260625210041114](C:\Users\HL\Desktop\mentohust-win-modern\image-20260625210041114.png)
+
 ## 仓库结构
 
 - `mentohust-modern/`：当前主力开发目录，包含 Python GUI、认证逻辑、测试和打包脚本。
