@@ -82,14 +82,21 @@ class MentohustClient:
         self.thread = threading.Thread(target=self._run, daemon=True, name="MentohustClient")
         self.thread.start()
 
-    def stop(self) -> None:
+    def stop(self, *, wait: bool = True) -> None:
         self.stop_event.set()
+        # 立即通知服务端，避免等待接收超时；关机时尤其重要。
+        if self.socket is not None and self.state in (START, IDENTITY, CHALLENGE, ECHO, WAITECHO):
+            try:
+                self._send_logoff()
+            except Exception:
+                pass
+            self.state = DISCONNECT
         if self.sniffer is not None:
             try:
                 self.sniffer.stop(join=False)
             except Exception:
                 pass
-        if self.thread is not None and self.thread.is_alive():
+        if wait and self.thread is not None and self.thread.is_alive():
             self.thread.join(timeout=5)
 
     def _log(self, message: str) -> None:
@@ -101,6 +108,8 @@ class MentohustClient:
     def _run(self) -> None:
         try:
             self._initialize()
+            if self.stop_event.is_set():
+                return
             if self.dhcp_mode_runtime == 3:
                 self._switch_state(DHCP)
             else:
@@ -204,6 +213,8 @@ class MentohustClient:
         return f"(ether proto 0x888e or ether proto 0x0806) and not ether src {mac}"
 
     def _switch_state(self, target: int) -> None:
+        if self.stop_event.is_set() and target != DISCONNECT:
+            return
         if self.state == target:
             self.send_count += 1
         else:

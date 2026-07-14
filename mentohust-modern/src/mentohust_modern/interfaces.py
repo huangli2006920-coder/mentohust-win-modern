@@ -150,11 +150,14 @@ $adapters = Get-NetAdapter -Physical -ErrorAction SilentlyContinue | Where-Objec
 }
 [bool]($adapters | Select-Object -First 1)
 """
-    output = subprocess.run(
-        ["powershell", "-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", script],
-        check=False,
-        capture_output=True,
-        text=True,
-        **hidden_subprocess_kwargs(),
-    )
+    try:
+        output = subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", script],
+            check=False,
+            capture_output=True,
+            text=True,
+            **hidden_subprocess_kwargs(),
+        )
+    except OSError:
+        return False
     return output.returncode == 0 and output.stdout.strip().lower() == "true"
