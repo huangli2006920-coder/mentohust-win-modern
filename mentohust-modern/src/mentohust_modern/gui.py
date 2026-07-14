@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import atexit
 import os
 import queue
 import tkinter as tk
@@ -17,7 +18,10 @@ from .logging_utils import get_logger
 from .openwrt import load_openwrt_config_file
 from .runtime_checks import validation_errors
 from .tray import TrayController
-from .windows import apply_window_icons, destroy_icon_handles
+from .windows import SessionEndNotifier, apply_window_icons, destroy_icon_handles
+
+
+WIFI_GUARD_INTERVAL_MS = 3_000
 
 
 class MentohustApp(ttk.Window):
@@ -39,6 +43,10 @@ class MentohustApp(ttk.Window):
         self._password_visible = False
         self._native_icon_handles: list[int] = []
         self._window_icons: list[ImageTk.PhotoImage] = []
+        self.session_end_notifier = SessionEndNotifier(
+            is_connected=lambda: self.client is not None,
+            on_session_end=self._on_session_end,
+        )
         self.ui_queue: queue.Queue[tuple[str, str]] = queue.Queue()
         self.status_var = tk.StringVar(value="未连接")
         self.form_vars = {
@@ -70,12 +78,15 @@ class MentohustApp(ttk.Window):
         )
         self._build()
         self._set_window_icon()
+        atexit.register(self._on_session_end)
+        self.session_end_notifier.start()
         self._refresh_interfaces()
         self._bind_auto_save()
         self._load_default_profile()
         self.tray.start()
         self.after(100, self._drain_ui_queue)
         self.after(300, self._maybe_auto_connect)
+        self.after(WIFI_GUARD_INTERVAL_MS, self._guard_wifi_connection)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _build(self) -> None:
@@ -377,6 +388,10 @@ class MentohustApp(ttk.Window):
     def _connect(self) -> None:
         if self.client is not None:
             return
+        if has_active_wifi_connection():
+            messagebox.showwarning("WiFi 已连接", "检测到 WiFi 已连接。请先断开 WiFi，再连接有线校园网认证。", parent=self)
+            self._log("[界面] 检测到 WiFi 已连接，已阻止发起有线认证。")
+            return
         try:
             config = self._collect_config()
         except ValueError as exc:
@@ -397,15 +412,15 @@ class MentohustApp(ttk.Window):
         self._save_default_profile()
         self._log("[界面] 已启动认证线程。")
 
-    def _disconnect(self) -> None:
+    def _disconnect(self, *, wait: bool = True, reason: str | None = None) -> None:
         if self.client is not None:
-            self.client.stop()
+            self.client.stop(wait=wait)
             self.client = None
         self.connect_button.configure(state=tk.NORMAL)
         self.disconnect_button.configure(state=tk.DISABLED)
         self.status_var.set("未连接")
         self._save_default_profile()
-        self._log("[界面] 已请求停止认证。")
+        self._log(reason or "[界面] 已请求停止认证。")
 
     def _maybe_auto_connect(self) -> None:
         if self._auto_connect_requested:
@@ -418,6 +433,26 @@ class MentohustApp(ttk.Window):
             self._auto_connect_requested = True
             self._log("[界面] 启动时自动连接已启用。")
             self._connect()
+
+    def _guard_wifi_connection(self) -> None:
+        """连接 WiFi 后立即停止有线认证，避免账号会话重叠。"""
+        if not self._is_exiting and self.client is not None and has_active_wifi_connection():
+            self._disconnect(
+                wait=False,
+                reason="[WiFi] 检测到 WiFi 已连接，已发送有线认证断开请求。",
+            )
+            self.tray.update_title(f"{APP_DIR_NAME} - 已断开（WiFi 已连接）")
+            self.tray.notify("检测到 WiFi 已连接，已发送 Logoff 并断开有线校园网认证。")
+        if not self._is_exiting:
+            self.after(WIFI_GUARD_INTERVAL_MS, self._guard_wifi_connection)
+
+    def _on_session_end(self) -> None:
+        """进程退出时，尽力发送非阻塞 Logoff。"""
+        if self._is_exiting:
+            return
+        self._is_exiting = True
+        if self.client is not None:
+            self.client.stop(wait=False)
 
     def _hide_to_tray(self) -> None:
         self.withdraw()
@@ -439,6 +474,7 @@ class MentohustApp(ttk.Window):
             self._disconnect()
         finally:
             self.tray.stop()
+            self.session_end_notifier.stop()
             destroy_icon_handles(self._native_icon_handles)
             self.destroy()
 

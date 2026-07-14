@@ -70,4 +70,5 @@ pwsh.exe -File .\mentohust-modern\tools\build_exe.ps1
 
 - 程序默认把配置和日志存放到 `%LOCALAPPDATA%\MentoHUST Win Modern\`。
 - 已支持托盘最小化、自动保存配置、启动时自动连接、滚动日志。
+- 连接前以及认证期间都会检测已连接的 WiFi；检测到 WiFi 后会阻止新的有线认证或主动发送 Logoff，避免同一账号继续占用有线会话。Windows 关机、重启或注销时也会尽力发送 Logoff，但强制断电或网络已先断开的情况只能由校园网服务端超时清理。
 - 本地账号配置、日志、构建产物、`.venv/` 和 `.build-venv/` 已在 `.gitignore` 中排除，不应提交到仓库。
