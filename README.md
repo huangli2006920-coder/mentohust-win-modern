@@ -10,7 +10,7 @@
 ## 仓库结构
 
 - `mentohust-modern/`：当前主力开发目录，包含 Python GUI、认证逻辑、测试和打包脚本。
-- `MentoHUST-OpenWrt-ipk/`：[OpenWrt 版本源码](https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk)，主要作为协议与配置参考。
+- `MentoHUST-OpenWrt-ipk/`：[OpenWrt 版本源码存档](https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk)，主要作为协议与配置参考。
 - `Ruijie Supplicant/`：锐捷官方客户端参考文件，仅用于兼容性分析和版本校验。
 
 ## 快速开始

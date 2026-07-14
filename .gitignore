@@ -33,12 +33,9 @@ dist/
 *.ncb
 *.sdf
 *.opensdf
-mentohust-windows/VS2012/Debug/
-mentohust-windows/VS2012/Release*/
 
 # Local runtime data
 *.log
-mentohust-modern/hlaccount.json
 Ruijie Supplicant/logs/
 
 # Agents Notes
